@@ -149,7 +149,7 @@ The BCM firmware binaries may not be redistributable so they need to be copied f
 
     mount -o ro /dev/mmcblk0p3 /mnt/
     mkdir /lib/firmware/bcm4330/
-    cp /mnt/etc/firmware/nvram_4330.txt /lib/firmware/
+    cp /mnt/etc/nvram_4330.txt /lib/firmware/
     cp /mnt/vendor/firmware/bcm4330/fw_bcmdhd.bin /lib/firmware/bcm4330/
     # Not sure where BT firmware should be in
     cp /mnt/etc/firmware/bcm4330.hcd /lib/firmware/

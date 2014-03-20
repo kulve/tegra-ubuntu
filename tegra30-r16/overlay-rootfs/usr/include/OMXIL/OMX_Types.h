@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005 The Khronos Group Inc. 
+ * Copyright (c) 2008 The Khronos Group Inc. 
  * 
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -21,7 +21,7 @@
  *
  */
 
-/** OMX_Types.h
+/** OMX_Types.h - OpenMax IL version 1.1.2
  *  The OMX_Types header file contains the primitive type definitions used by 
  *  the core, the application and the component.  This file may need to be
  *  modified to be used on systems that do not have "char" set to 8 bits, 
@@ -38,66 +38,96 @@ extern "C" {
 /** The OMX_API and OMX_APIENTRY are platform specific definitions used
  *  to declare OMX function prototypes.  They are modified to meet the
  *  requirements for a particular platform */
-#ifdef _WIN32
+#ifdef __SYMBIAN32__   
 #   ifdef __OMX_EXPORTS
 #       define OMX_API __declspec(dllexport)
 #   else
-#       define OMX_API __declspec(dllimport)
+#       ifdef _WIN32
+#           define OMX_API __declspec(dllexport) 
+#       else
+#           define OMX_API __declspec(dllimport)
+#       endif
 #   endif
 #else
-#   ifdef __OMX_EXPORTS
-#       define OMX_API
+#   ifdef _WIN32
+#      ifdef __OMX_EXPORTS
+#          define OMX_API __declspec(dllexport)
+#      else
+#          define OMX_API __declspec(dllimport)
+#      endif
 #   else
-#       define OMX_API extern
+#      ifdef __OMX_EXPORTS
+#          define OMX_API
+#      else
+#          define OMX_API extern
+#      endif
 #   endif
 #endif
 
-#ifdef __SYMBIAN32__
-#   ifdef __OMX_EXPORTS
-#       define OMX_API EXPORT_C
-#   else
-#       define OMX_API IMPORT_C
-#   endif
-#elif defined(_WIN32)
-#   ifdef __OMX_EXPORTS
-#       define OMX_API __declspec(dllexport)
-#   else
-#       define OMX_API __declspec(dllimport)
-#   endif
-#else
-#   ifdef __OMX_EXPORTS
-#       define OMX_API
-#   else
-#       define OMX_API extern
-#   endif
-#endif
-
-
+#ifndef OMX_APIENTRY
 #define OMX_APIENTRY 
-
+#endif 
 
 /** OMX_IN is used to identify inputs to an OMX function.  This designation 
     will also be used in the case of a pointer that points to a parameter 
     that is used as an output. */
+#ifndef OMX_IN
 #define OMX_IN
+#endif
 
 /** OMX_OUT is used to identify outputs from an OMX function.  This 
     designation will also be used in the case of a pointer that points 
     to a parameter that is used as an input. */
+#ifndef OMX_OUT
 #define OMX_OUT
+#endif
 
 
 /** OMX_INOUT is used to identify parameters that may be either inputs or
     outputs from an OMX function at the same time.  This designation will 
     also be used in the case of a pointer that  points to a parameter that 
     is used both as an input and an output. */
+#ifndef OMX_INOUT
 #define OMX_INOUT
+#endif
 
 /** OMX_ALL is used to as a wildcard to select all entities of the same type
  *  when specifying the index, or referring to a object by an index.  (i.e.
- *  use OMX_ALL to indicate all N channels) */
-#define OMX_ALL 0xFFFFFFFF;
+ *  use OMX_ALL to indicate all N channels). When used as a port index
+ *  for a config or parameter this OMX_ALL denotes that the config or
+ *  parameter applies to the entire component not just one port. */
+#define OMX_ALL 0xFFFFFFFF
 
+/** In the following we define groups that help building doxygen documentation */
+
+/** @defgroup core OpenMAX IL core
+ * Functions and structure related to the OMX IL core
+ */
+ 
+ /** @defgroup comp OpenMAX IL component
+ * Functions and structure related to the OMX IL component
+ */
+ 
+/** @defgroup rpm Resource and Policy Management 
+ * Structures for resource and policy management of components
+ */
+
+/** @defgroup buf Buffer Management
+ * Buffer handling functions and structures
+ */
+  
+/** @defgroup tun Tunneling
+ * @ingroup core comp
+ * Structures and functions to manage tunnels among component ports
+ */
+ 
+/** @defgroup cp Content Pipes
+ *  @ingroup core
+ */
+ 
+ /** @defgroup metadata Metadata handling
+  * 
+  */ 
 
 /** OMX_U8 is an 8 bit unsigned quantity that is byte aligned */
 typedef unsigned char OMX_U8;
@@ -280,6 +310,46 @@ typedef struct OMX_MARKTYPE
  *  or can be used by a audio port for native audio rendering */
 typedef void* OMX_NATIVE_DEVICETYPE;
 
+/** OMX_NATIVE_WINDOWTYPE is used to map a OMX video port to the
+ *  platform & operating specific object used to reference the window */
+typedef void* OMX_NATIVE_WINDOWTYPE;
+
+
+/** Define the OMX IL version that corresponds to this set of header files.
+ *  We also define a combined version that can be used to write or compare
+ *  values of the 32bit nVersion field, assuming a little endian architecture */
+#define OMX_VERSION_MAJOR 1
+#define OMX_VERSION_MINOR 1
+#define OMX_VERSION_REVISION 2
+#define OMX_VERSION_STEP 0
+
+#define OMX_VERSION ((OMX_VERSION_STEP<<24) | (OMX_VERSION_REVISION<<16) | (OMX_VERSION_MINOR<<8) | OMX_VERSION_MAJOR)
+
+
+/** The OMX_VERSIONTYPE union is used to specify the version for
+    a structure or component.  For a component, the version is entirely
+    specified by the component vendor.  Components doing the same function
+    from different vendors may or may not have the same version.  For 
+    structures, the version shall be set by the entity that allocates the
+    structure.  For structures specified in the OMX 1.1 specification, the
+    value of the version shall be set to 1.1.0.0 in all cases.  Access to the
+    OMX_VERSIONTYPE can be by a single 32 bit access (e.g. by nVersion) or
+    by accessing one of the structure elements to, for example, check only
+    the Major revision.
+ */
+typedef union OMX_VERSIONTYPE
+{
+    struct
+    {
+        OMX_U8 nVersionMajor;   /**< Major version accessor element */
+        OMX_U8 nVersionMinor;   /**< Minor version accessor element */
+        OMX_U8 nRevision;       /**< Revision version accessor element */
+        OMX_U8 nStep;           /**< Step version accessor element */
+    } s;
+    OMX_U32 nVersion;           /**< 32 bit value to make accessing the
+                                    version easily done in a single word
+                                    size copy/compare operation */
+} OMX_VERSIONTYPE;
 
 #ifdef __cplusplus
 }

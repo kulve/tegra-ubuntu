@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2005 The Khronos Group Inc. 
+ * Copyright (c) 2008 The Khronos Group Inc. 
  * 
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,12 +22,18 @@
  */
 
 /** 
- *  @file OMX_Video.h
+ *  @file OMX_Video.h - OpenMax IL version 1.1.2
  *  The structures is needed by Video components to exchange parameters 
  *  and configuration data with OMX components.
  */
 #ifndef OMX_Video_h
 #define OMX_Video_h
+
+/** @defgroup video OpenMAX IL Video Domain
+ * @ingroup iv
+ * Structures for OpenMAX IL Video domain
+ * @{
+ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,8 +45,7 @@ extern "C" {
  * header to compile without errors.  The includes below are required
  * for this header file to compile successfully 
  */
-#include <OMX_Types.h>
-#include <OMX_Core.h>
+
 #include <OMX_IVCommon.h>
 
 
@@ -63,6 +68,8 @@ typedef enum OMX_VIDEO_CODINGTYPE {
     OMX_VIDEO_CodingRV,         /**< all versions of Real Video */
     OMX_VIDEO_CodingAVC,        /**< H.264/AVC */
     OMX_VIDEO_CodingMJPEG,      /**< Motion JPEG */
+    OMX_VIDEO_CodingKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_CodingVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_CodingMax = 0x7FFFFFFF
 } OMX_VIDEO_CODINGTYPE;
 
@@ -111,6 +118,8 @@ typedef enum OMX_VIDEO_CODINGTYPE {
  *                          component. When OMX_VIDEO_CodingUnused is 
  *                          specified, eColorFormat is used
  *  eColorFormat : Decompressed format used by this component
+ *  pNativeWindow : Platform specific reference for a window object if a 
+ *                          display sink , otherwise this field is 0x0. 
  */
 typedef struct OMX_VIDEO_PORTDEFINITIONTYPE {
     OMX_STRING cMIMEType;
@@ -124,8 +133,8 @@ typedef struct OMX_VIDEO_PORTDEFINITIONTYPE {
     OMX_BOOL bFlagErrorConcealment;
     OMX_VIDEO_CODINGTYPE eCompressionFormat;
     OMX_COLOR_FORMATTYPE eColorFormat;
+    OMX_NATIVE_WINDOWTYPE pNativeWindow;
 } OMX_VIDEO_PORTDEFINITIONTYPE;
-
 
 /**  
  * Port format parameter.  This structure is used to enumerate the various 
@@ -141,6 +150,7 @@ typedef struct OMX_VIDEO_PORTDEFINITIONTYPE {
  *                       component. When OMX_VIDEO_CodingUnused is specified, 
  *                       eColorFormat is used 
  *  eColorFormat       : Decompressed format used by this component
+ *  xFrameRate         : Indicates the video frame rate in Q16 format
  */
 typedef struct OMX_VIDEO_PARAM_PORTFORMATTYPE {
     OMX_U32 nSize;
@@ -149,6 +159,7 @@ typedef struct OMX_VIDEO_PARAM_PORTFORMATTYPE {
     OMX_U32 nIndex;
     OMX_VIDEO_CODINGTYPE eCompressionFormat; 
     OMX_COLOR_FORMATTYPE eColorFormat;
+    OMX_U32 xFramerate;
 } OMX_VIDEO_PARAM_PORTFORMATTYPE;
 
 
@@ -208,6 +219,8 @@ typedef enum OMX_VIDEO_CONTROLRATETYPE {
     OMX_Video_ControlRateConstant,
     OMX_Video_ControlRateVariableSkipFrames,
     OMX_Video_ControlRateConstantSkipFrames,
+    OMX_Video_ControlRateKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_Video_ControlRateVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_Video_ControlRateMax = 0x7FFFFFFF
 } OMX_VIDEO_CONTROLRATETYPE;
 
@@ -239,6 +252,8 @@ typedef enum OMX_VIDEO_MOTIONVECTORTYPE {
     OMX_Video_MotionVectorHalfPel,
     OMX_Video_MotionVectorQuarterPel,
     OMX_Video_MotionVectorEighthPel,
+    OMX_Video_MotionVectorKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_Video_MotionVectorVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_Video_MotionVectorMax = 0x7FFFFFFF
 } OMX_VIDEO_MOTIONVECTORTYPE;
 
@@ -276,6 +291,8 @@ typedef enum OMX_VIDEO_INTRAREFRESHTYPE {
     OMX_VIDEO_IntraRefreshCyclic,
     OMX_VIDEO_IntraRefreshAdaptive,
     OMX_VIDEO_IntraRefreshBoth,
+    OMX_VIDEO_IntraRefreshKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_IntraRefreshVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_IntraRefreshMax = 0x7FFFFFFF
 } OMX_VIDEO_INTRAREFRESHTYPE;
 
@@ -397,6 +414,8 @@ typedef enum OMX_VIDEO_H263PROFILETYPE {
     OMX_VIDEO_H263ProfileInternet            = 0x40,            
     OMX_VIDEO_H263ProfileInterlace           = 0x80,           
     OMX_VIDEO_H263ProfileHighLatency         = 0x100,         
+    OMX_VIDEO_H263ProfileKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_H263ProfileVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_H263ProfileMax                 = 0x7FFFFFFF  
 } OMX_VIDEO_H263PROFILETYPE;
 
@@ -410,9 +429,12 @@ typedef enum OMX_VIDEO_H263LEVELTYPE {
     OMX_VIDEO_H263Level20  = 0x02,      
     OMX_VIDEO_H263Level30  = 0x04,      
     OMX_VIDEO_H263Level40  = 0x08,      
-    OMX_VIDEO_H263Level50  = 0x10,      
-    OMX_VIDEO_H263Level60  = 0x20,      
-    OMX_VIDEO_H263Level70  = 0x40,      
+    OMX_VIDEO_H263Level45  = 0x10,      
+    OMX_VIDEO_H263Level50  = 0x20,      
+    OMX_VIDEO_H263Level60  = 0x40,      
+    OMX_VIDEO_H263Level70  = 0x80, 
+    OMX_VIDEO_H263LevelKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_H263LevelVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_H263LevelMax = 0x7FFFFFFF  
 } OMX_VIDEO_H263LEVELTYPE;
 
@@ -436,6 +458,8 @@ typedef enum OMX_VIDEO_PICTURETYPE {
     OMX_VIDEO_PictureTypeEI  = 0x11,
     OMX_VIDEO_PictureTypeEP  = 0x12,
     OMX_VIDEO_PictureTypeS   = 0x14,
+    OMX_VIDEO_PictureTypeKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_PictureTypeVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_PictureTypeMax = 0x7FFFFFFF
 } OMX_VIDEO_PICTURETYPE;
 
@@ -493,6 +517,8 @@ typedef enum OMX_VIDEO_MPEG2PROFILETYPE {
     OMX_VIDEO_MPEG2ProfileSNR,         /**< SNR Profile */
     OMX_VIDEO_MPEG2ProfileSpatial,     /**< Spatial Profile */
     OMX_VIDEO_MPEG2ProfileHigh,        /**< High Profile */
+    OMX_VIDEO_MPEG2ProfileKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_MPEG2ProfileVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_MPEG2ProfileMax = 0x7FFFFFFF  
 } OMX_VIDEO_MPEG2PROFILETYPE;
 
@@ -506,6 +532,8 @@ typedef enum OMX_VIDEO_MPEG2LEVELTYPE {
     OMX_VIDEO_MPEG2LevelML,      /**< Main Level */ 
     OMX_VIDEO_MPEG2LevelH14,     /**< High 1440 */ 
     OMX_VIDEO_MPEG2LevelHL,      /**< High Level */   
+    OMX_VIDEO_MPEG2LevelKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_MPEG2LevelVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_MPEG2LevelMax = 0x7FFFFFFF  
 } OMX_VIDEO_MPEG2LEVELTYPE;
 
@@ -569,7 +597,10 @@ typedef enum OMX_VIDEO_MPEG4PROFILETYPE {
     OMX_VIDEO_MPEG4ProfileCoreScalable     = 0x800,      
     OMX_VIDEO_MPEG4ProfileAdvancedCoding   = 0x1000,    
     OMX_VIDEO_MPEG4ProfileAdvancedCore     = 0x2000,      
-    OMX_VIDEO_MPEG4ProfileAdvancedScalable = 0x4000,  
+    OMX_VIDEO_MPEG4ProfileAdvancedScalable = 0x4000,
+    OMX_VIDEO_MPEG4ProfileAdvancedSimple   = 0x8000,
+    OMX_VIDEO_MPEG4ProfileKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_MPEG4ProfileVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_MPEG4ProfileMax              = 0x7FFFFFFF  
 } OMX_VIDEO_MPEG4PROFILETYPE;
 
@@ -579,10 +610,16 @@ typedef enum OMX_VIDEO_MPEG4PROFILETYPE {
  * sizes, bit rates, decoder frame rates.  No need 
  */
 typedef enum OMX_VIDEO_MPEG4LEVELTYPE {
-    OMX_VIDEO_MPEG4Levell = 0x01,   /**< Level 1 */ 
-    OMX_VIDEO_MPEG4Level2 = 0x02,   /**< Level 2 */ 
-    OMX_VIDEO_MPEG4Level3 = 0x04,   /**< Level 3 */ 
-    OMX_VIDEO_MPEG4Level4 = 0x08,   /**< Level 4 */   
+    OMX_VIDEO_MPEG4Level0  = 0x01,   /**< Level 0 */   
+    OMX_VIDEO_MPEG4Level0b = 0x02,   /**< Level 0b */   
+    OMX_VIDEO_MPEG4Level1  = 0x04,   /**< Level 1 */ 
+    OMX_VIDEO_MPEG4Level2  = 0x08,   /**< Level 2 */ 
+    OMX_VIDEO_MPEG4Level3  = 0x10,   /**< Level 3 */ 
+    OMX_VIDEO_MPEG4Level4  = 0x20,   /**< Level 4 */  
+    OMX_VIDEO_MPEG4Level4a = 0x40,   /**< Level 4a */  
+    OMX_VIDEO_MPEG4Level5  = 0x80,   /**< Level 5 */  
+    OMX_VIDEO_MPEG4LevelKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_MPEG4LevelVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_MPEG4LevelMax = 0x7FFFFFFF  
 } OMX_VIDEO_MPEG4LEVELTYPE;
 
@@ -644,6 +681,8 @@ typedef enum OMX_VIDEO_WMVFORMATTYPE {
     OMX_VIDEO_WMVFormat7      = 0x02,   /**< Windows Media Video format 7 */
     OMX_VIDEO_WMVFormat8      = 0x04,   /**< Windows Media Video format 8 */
     OMX_VIDEO_WMVFormat9      = 0x08,   /**< Windows Media Video format 9 */
+    OMX_VIDEO_WMFFormatKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_WMFFormatVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_WMVFormatMax    = 0x7FFFFFFF
 } OMX_VIDEO_WMVFORMATTYPE;
 
@@ -671,7 +710,10 @@ typedef struct OMX_VIDEO_PARAM_WMVTYPE {
 typedef enum OMX_VIDEO_RVFORMATTYPE {
     OMX_VIDEO_RVFormatUnused = 0, /**< Format unused or unknown */
     OMX_VIDEO_RVFormat8,          /**< Real Video format 8 */
-    OMX_VIDEO_RVFormat9,          /**< Real video format 9 */
+    OMX_VIDEO_RVFormat9,          /**< Real Video format 9 */
+    OMX_VIDEO_RVFormatG2,         /**< Real Video Format G2 */
+    OMX_VIDEO_RVFormatKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_RVFormatVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_RVFormatMax = 0x7FFFFFFF
 } OMX_VIDEO_RVFORMATTYPE;
 
@@ -684,7 +726,15 @@ typedef enum OMX_VIDEO_RVFORMATTYPE {
  *  nVersion           : OMX specification version information 
  *  nPortIndex         : Port that this structure applies to
  *  eFormat            : Version of RV stream / data
+ *  nBitsPerPixel      : Bits per pixel coded in the frame
+ *  nPaddedWidth       : Padded width in pixel of a video frame
+ *  nPaddedHeight      : Padded Height in pixels of a video frame
+ *  nFrameRate         : Rate of video in frames per second
+ *  nBitstreamFlags    : Flags which internal information about the bitstream
+ *  nBitstreamVersion  : Bitstream version
+ *  nMaxEncodeFrameSize: Max encoded frame size
  *  bEnablePostFilter  : Turn on/off post filter
+ *  bEnableTemporalInterpolation : Turn on/off temporal interpolation
  *  bEnableLatencyMode : When enabled, the decoder does not display a decoded 
  *                       frame until it has detected that no enhancement layer 
  *  					 frames or dependent B frames will be coming. This 
@@ -696,8 +746,16 @@ typedef struct OMX_VIDEO_PARAM_RVTYPE {
     OMX_VERSIONTYPE nVersion;
     OMX_U32 nPortIndex;
     OMX_VIDEO_RVFORMATTYPE eFormat;
+    OMX_U16 nBitsPerPixel;
+    OMX_U16 nPaddedWidth;
+    OMX_U16 nPaddedHeight;
+    OMX_U32 nFrameRate;
+    OMX_U32 nBitstreamFlags;
+    OMX_U32 nBitstreamVersion;
+    OMX_U32 nMaxEncodeFrameSize;
     OMX_BOOL bEnablePostFilter;
-    OMX_BOOL bEnableLatencyMode;									
+    OMX_BOOL bEnableTemporalInterpolation;
+    OMX_BOOL bEnableLatencyMode;
 } OMX_VIDEO_PARAM_RVTYPE;
 
 
@@ -713,6 +771,8 @@ typedef enum OMX_VIDEO_AVCPROFILETYPE {
     OMX_VIDEO_AVCProfileHigh10   = 0x10,   /**< High 10 profile */
     OMX_VIDEO_AVCProfileHigh422  = 0x20,   /**< High 4:2:2 profile */
     OMX_VIDEO_AVCProfileHigh444  = 0x40,   /**< High 4:4:4 profile */
+    OMX_VIDEO_AVCProfileKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_AVCProfileVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_AVCProfileMax      = 0x7FFFFFFF  
 } OMX_VIDEO_AVCPROFILETYPE;
 
@@ -738,6 +798,8 @@ typedef enum OMX_VIDEO_AVCLEVELTYPE {
     OMX_VIDEO_AVCLevel42  = 0x2000,   /**< Level 4.2 */
     OMX_VIDEO_AVCLevel5   = 0x4000,   /**< Level 5 */
     OMX_VIDEO_AVCLevel51  = 0x8000,   /**< Level 5.1 */
+    OMX_VIDEO_AVCLevelKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_AVCLevelVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_AVCLevelMax = 0x7FFFFFFF  
 } OMX_VIDEO_AVCLEVELTYPE;
 
@@ -753,6 +815,8 @@ typedef enum OMX_VIDEO_AVCLOOPFILTERTYPE {
     OMX_VIDEO_AVCLoopFilterEnable = 0,
     OMX_VIDEO_AVCLoopFilterDisable,
     OMX_VIDEO_AVCLoopFilterDisableSliceBoundary,
+    OMX_VIDEO_AVCLoopFilterKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_AVCLoopFilterVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_AVCLoopFilterMax = 0x7FFFFFFF
 } OMX_VIDEO_AVCLOOPFILTERTYPE;
 
@@ -798,7 +862,7 @@ typedef enum OMX_VIDEO_AVCLOOPFILTERTYPE {
  *                              be applied to P and SP slices
  *  nWeightedBipredicitonMode : Default weighted prediction is applied to B 
  *                              slices 
- *  bConstIpred               : Enable/disable intra prediction
+ *  bconstIpred               : Enable/disable intra prediction
  *  bDirect8x8Inference       : Specifies the method used in the derivation 
  *                              process for luma motion vectors for B_Skip, 
  *                              B_Direct_16x16 and B_Direct_8x8 as specified 
@@ -840,6 +904,152 @@ typedef struct OMX_VIDEO_PARAM_AVCTYPE {
 	OMX_VIDEO_AVCLOOPFILTERTYPE eLoopFilterMode;
 } OMX_VIDEO_PARAM_AVCTYPE;
 
+typedef struct OMX_VIDEO_PARAM_PROFILELEVELTYPE {
+   OMX_U32 nSize;                 
+   OMX_VERSIONTYPE nVersion;      
+   OMX_U32 nPortIndex;            
+   OMX_U32 eProfile;      /**< type is OMX_VIDEO_AVCPROFILETYPE, OMX_VIDEO_H263PROFILETYPE, 
+                                 or OMX_VIDEO_MPEG4PROFILETYPE depending on context */
+   OMX_U32 eLevel;        /**< type is OMX_VIDEO_AVCLEVELTYPE, OMX_VIDEO_H263LEVELTYPE, 
+                                 or OMX_VIDEO_MPEG4PROFILETYPE depending on context */
+   OMX_U32 nProfileIndex; /**< Used to query for individual profile support information,
+                               This parameter is valid only for 
+                               OMX_IndexParamVideoProfileLevelQuerySupported index,
+                               For all other indices this parameter is to be ignored. */
+} OMX_VIDEO_PARAM_PROFILELEVELTYPE;
+
+/** 
+ * Structure for dynamically configuring bitrate mode of a codec. 
+ *
+ * STRUCT MEMBERS:
+ *  nSize          : Size of the struct in bytes
+ *  nVersion       : OMX spec version info
+ *  nPortIndex     : Port that this struct applies to
+ *  nEncodeBitrate : Target average bitrate to be generated in bps
+ */
+typedef struct OMX_VIDEO_CONFIG_BITRATETYPE {
+    OMX_U32 nSize;                          
+    OMX_VERSIONTYPE nVersion;               
+    OMX_U32 nPortIndex;                     
+    OMX_U32 nEncodeBitrate;                 
+} OMX_VIDEO_CONFIG_BITRATETYPE;
+
+/** 
+ * Defines Encoder Frame Rate setting
+ *
+ * STRUCT MEMBERS:
+ *  nSize            : Size of the structure in bytes
+ *  nVersion         : OMX specification version information 
+ *  nPortIndex       : Port that this structure applies to
+ *  xEncodeFramerate : Encoding framerate represented in Q16 format
+ */
+typedef struct OMX_CONFIG_FRAMERATETYPE {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_U32 xEncodeFramerate; /* Q16 format */
+} OMX_CONFIG_FRAMERATETYPE;
+
+typedef struct OMX_CONFIG_INTRAREFRESHVOPTYPE {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_BOOL IntraRefreshVOP;
+} OMX_CONFIG_INTRAREFRESHVOPTYPE;
+
+typedef struct OMX_CONFIG_MACROBLOCKERRORMAPTYPE {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_U32 nErrMapSize;           /* Size of the Error Map in bytes */
+    OMX_U8  ErrMap[1];             /* Error map hint */
+} OMX_CONFIG_MACROBLOCKERRORMAPTYPE;
+
+typedef struct OMX_CONFIG_MBERRORREPORTINGTYPE {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_BOOL bEnabled;
+} OMX_CONFIG_MBERRORREPORTINGTYPE;
+
+typedef struct OMX_PARAM_MACROBLOCKSTYPE {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_U32 nMacroblocks;
+} OMX_PARAM_MACROBLOCKSTYPE;
+
+/** 
+ * AVC Slice Mode modes 
+ *
+ * OMX_VIDEO_SLICEMODE_AVCDefault   : Normal frame encoding, one slice per frame
+ * OMX_VIDEO_SLICEMODE_AVCMBSlice   : NAL mode, number of MBs per frame
+ * OMX_VIDEO_SLICEMODE_AVCByteSlice : NAL mode, number of bytes per frame
+ */
+typedef enum OMX_VIDEO_AVCSLICEMODETYPE {
+    OMX_VIDEO_SLICEMODE_AVCDefault = 0,
+    OMX_VIDEO_SLICEMODE_AVCMBSlice,
+    OMX_VIDEO_SLICEMODE_AVCByteSlice,
+    OMX_VIDEO_SLICEMODE_AVCKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_VIDEO_SLICEMODE_AVCVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+    OMX_VIDEO_SLICEMODE_AVCLevelMax = 0x7FFFFFFF
+} OMX_VIDEO_AVCSLICEMODETYPE;
+
+/** 
+ * AVC FMO Slice Mode Params 
+ *
+ * STRUCT MEMBERS:
+ *  nSize      : Size of the structure in bytes
+ *  nVersion   : OMX specification version information
+ *  nPortIndex : Port that this structure applies to
+ *  nNumSliceGroups : Specifies the number of slice groups
+ *  nSliceGroupMapType : Specifies the type of slice groups
+ *  eSliceMode : Specifies the type of slice
+ */
+typedef struct OMX_VIDEO_PARAM_AVCSLICEFMO {
+    OMX_U32 nSize; 
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_U8 nNumSliceGroups;
+    OMX_U8 nSliceGroupMapType;
+    OMX_VIDEO_AVCSLICEMODETYPE eSliceMode;
+} OMX_VIDEO_PARAM_AVCSLICEFMO;
+
+/** 
+ * AVC IDR Period Configs
+ *
+ * STRUCT MEMBERS:
+ *  nSize      : Size of the structure in bytes
+ *  nVersion   : OMX specification version information
+ *  nPortIndex : Port that this structure applies to
+ *  nIDRPeriod : Specifies periodicity of IDR frames
+ *  nPFrames : Specifies internal of coding Intra frames
+ */
+typedef struct OMX_VIDEO_CONFIG_AVCINTRAPERIOD {
+    OMX_U32 nSize; 
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_U32 nIDRPeriod;
+    OMX_U32 nPFrames;
+} OMX_VIDEO_CONFIG_AVCINTRAPERIOD;
+
+/** 
+ * AVC NAL Size Configs
+ *
+ * STRUCT MEMBERS:
+ *  nSize      : Size of the structure in bytes
+ *  nVersion   : OMX specification version information
+ *  nPortIndex : Port that this structure applies to
+ *  nNaluBytes : Specifies the NAL unit size
+ */
+typedef struct OMX_VIDEO_CONFIG_NALSIZE {
+    OMX_U32 nSize; 
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_U32 nNaluBytes;
+} OMX_VIDEO_CONFIG_NALSIZE;
+
+/** @} */
 
 #ifdef __cplusplus
 }

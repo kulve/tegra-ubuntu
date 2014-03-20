@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2005 The Khronos Group Inc. 
+ * Copyright (c) 2008 The Khronos Group Inc. 
  * 
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -21,7 +21,7 @@
  */
 
 /** 
- * @file OMX_Image.h
+ * @file OMX_Image.h - OpenMax IL version 1.1.2
  * The structures needed by Image components to exchange parameters and 
  * configuration data with the components.
  */
@@ -38,10 +38,14 @@ extern "C" {
  * header to compile without errors.  The includes below are required  
  * for this header file to compile successfully 
  */
-#include <OMX_Types.h>
-#include <OMX_Core.h>
+
 #include <OMX_IVCommon.h>
 
+/** @defgroup imaging OpenMAX IL Imaging Domain
+ * @ingroup iv
+ * Structures for OpenMAX IL Imaging domain
+ * @{
+ */
 
 /** 
  * Enumeration used to define the possible image compression coding. 
@@ -57,6 +61,8 @@ typedef enum OMX_IMAGE_CODINGTYPE {
     OMX_IMAGE_CodingPNG,         /**< PNG image format */
     OMX_IMAGE_CodingLZW,         /**< LZW image format */
     OMX_IMAGE_CodingBMP,         /**< Windows Bitmap format */
+    OMX_IMAGE_CodingKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_IMAGE_CodingVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_IMAGE_CodingMax = 0x7FFFFFFF
 } OMX_IMAGE_CODINGTYPE;
 
@@ -99,6 +105,8 @@ typedef enum OMX_IMAGE_CODINGTYPE {
  *                          the component. When OMX_IMAGE_CodingUnused is 
  *                          specified, eColorFormat is valid
  *  eColorFormat          : Decompressed format used by this component
+ *  pNativeWindow         : Platform specific reference for a window object if a 
+ *                          display sink , otherwise this field is 0x0. 
  */
 typedef struct OMX_IMAGE_PORTDEFINITIONTYPE {
     OMX_STRING cMIMEType;
@@ -110,6 +118,7 @@ typedef struct OMX_IMAGE_PORTDEFINITIONTYPE {
     OMX_BOOL bFlagErrorConcealment;
     OMX_IMAGE_CODINGTYPE eCompressionFormat;
     OMX_COLOR_FORMATTYPE eColorFormat;
+    OMX_NATIVE_WINDOWTYPE pNativeWindow;
 } OMX_IMAGE_PORTDEFINITIONTYPE;
 
 
@@ -151,6 +160,8 @@ typedef enum OMX_IMAGE_FLASHCONTROLTYPE {
     OMX_IMAGE_FlashControlRedEyeReduction,
     OMX_IMAGE_FlashControlFillin,
     OMX_IMAGE_FlashControlTorch,
+    OMX_IMAGE_FlashControlKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_IMAGE_FlashControlVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_IMAGE_FlashControlMax = 0x7FFFFFFF
 } OMX_IMAGE_FLASHCONTROLTYPE;
 
@@ -180,7 +191,8 @@ typedef enum OMX_IMAGE_FOCUSCONTROLTYPE {
     OMX_IMAGE_FocusControlOff,
     OMX_IMAGE_FocusControlAuto,
     OMX_IMAGE_FocusControlAutoLock,
-    OMX_IMAGE_FocusControlCentroid,   
+    OMX_IMAGE_FocusControlKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_IMAGE_FocusControlVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_IMAGE_FocusControlMax = 0x7FFFFFFF
 } OMX_IMAGE_FOCUSCONTROLTYPE;
 
@@ -197,14 +209,14 @@ typedef enum OMX_IMAGE_FOCUSCONTROLTYPE {
  *                    Interest is only in number of steps over this range.
  *  nFocusStepIndex : Current focus step index
  */
-typedef struct OMX_IMAGE_PARAM_FOCUSCONTROLTYPE {
+typedef struct OMX_IMAGE_CONFIG_FOCUSCONTROLTYPE {
     OMX_U32 nSize;
     OMX_VERSIONTYPE nVersion;
     OMX_U32 nPortIndex;
     OMX_IMAGE_FOCUSCONTROLTYPE eFocusControl;
     OMX_U32 nFocusSteps;
     OMX_U32 nFocusStepIndex;
-} OMX_IMAGE_PARAM_FOCUSCONTROLTYPE;
+} OMX_IMAGE_CONFIG_FOCUSCONTROLTYPE;
 
 
 /** 
@@ -232,12 +244,16 @@ typedef struct OMX_IMAGE_PARAM_QFACTORTYPE {
 /** 
  * Quantization table type 
  */
+
 typedef enum OMX_IMAGE_QUANTIZATIONTABLETYPE {
     OMX_IMAGE_QuantizationTableLuma = 0,
     OMX_IMAGE_QuantizationTableChroma,
+    OMX_IMAGE_QuantizationTableChromaCb,
+    OMX_IMAGE_QuantizationTableChromaCr,
+    OMX_IMAGE_QuantizationTableKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_IMAGE_QuantizationTableVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_IMAGE_QuantizationTableMax = 0x7FFFFFFF
 } OMX_IMAGE_QUANTIZATIONTABLETYPE;
-
 
 /** 
  * JPEG quantization tables are used to determine DCT compression for
@@ -256,7 +272,7 @@ typedef enum OMX_IMAGE_QUANTIZATIONTABLETYPE {
  *                            (i.e. the component will zig-zag the 
  *                            quantization table data if required internally) 
  */
-typedef struct OMX_IMAGE_PARAM_QUANTIZATIONTABLETTYPE {
+typedef struct OMX_IMAGE_PARAM_QUANTIZATIONTABLETYPE {
     OMX_U32 nSize;
     OMX_VERSIONTYPE nVersion;
     OMX_U32 nPortIndex;
@@ -272,9 +288,14 @@ typedef struct OMX_IMAGE_PARAM_QUANTIZATIONTABLETTYPE {
 typedef enum OMX_IMAGE_HUFFMANTABLETYPE {
     OMX_IMAGE_HuffmanTableAC = 0,
     OMX_IMAGE_HuffmanTableDC,
+    OMX_IMAGE_HuffmanTableACLuma,
+    OMX_IMAGE_HuffmanTableACChroma,
+    OMX_IMAGE_HuffmanTableDCLuma,
+    OMX_IMAGE_HuffmanTableDCChroma,
+    OMX_IMAGE_HuffmanTableKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_IMAGE_HuffmanTableVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_IMAGE_HuffmanTableMax = 0x7FFFFFFF
 } OMX_IMAGE_HUFFMANTABLETYPE;
-
 
 /** 
  * JPEG Huffman table 
@@ -298,7 +319,7 @@ typedef struct OMX_IMAGE_PARAM_HUFFMANTTABLETYPE {
     OMX_U8 nHuffmanTable[256];
 }OMX_IMAGE_PARAM_HUFFMANTTABLETYPE;
 
-
+/** @} */
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

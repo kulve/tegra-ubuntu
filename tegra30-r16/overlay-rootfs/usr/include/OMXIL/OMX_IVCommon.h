@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2005 The Khronos Group Inc. 
+ * Copyright (c) 2008 The Khronos Group Inc. 
  * 
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,7 +22,7 @@
  */
 
 /** 
- * @file OMX_IVCommon.h
+ * @file OMX_IVCommon.h - OpenMax IL version 1.1.2
  *  The structures needed by Video and Image components to exchange
  *  parameters and configuration data with the components.
  */
@@ -38,8 +38,13 @@ extern "C" {
  * to compile without errors.  The includes below are required for this header
  * file to compile successfully 
  */
-#include <OMX_Types.h>
+
 #include <OMX_Core.h>
+
+/** @defgroup iv OpenMAX IL Imaging and Video Domain
+ * Common structures for OpenMAX IL Imaging and Video domains
+ * @{
+ */
 
 
 /** 
@@ -120,6 +125,13 @@ typedef enum OMX_COLOR_FORMATTYPE {
     OMX_COLOR_FormatL16, 
     OMX_COLOR_FormatL24, 
     OMX_COLOR_FormatL32,
+    OMX_COLOR_FormatYUV420PackedSemiPlanar,
+    OMX_COLOR_FormatYUV422PackedSemiPlanar,
+    OMX_COLOR_Format18BitBGR666,
+    OMX_COLOR_Format24BitARGB6666,
+    OMX_COLOR_Format24BitABGR6666,
+    OMX_COLOR_FormatKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_COLOR_FormatVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_COLOR_FormatMax = 0x7FFFFFFF
 } OMX_COLOR_FORMATTYPE;
 
@@ -167,6 +179,8 @@ typedef enum OMX_IMAGEFILTERTYPE {
     OMX_ImageFilterAntialias, 
     OMX_ImageFilterDeRing,       
     OMX_ImageFilterSolarize,
+    OMX_ImageFilterKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_ImageFilterVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_ImageFilterMax = 0x7FFFFFFF
 } OMX_IMAGEFILTERTYPE;
 
@@ -176,9 +190,9 @@ typedef enum OMX_IMAGEFILTERTYPE {
  *
  * STRUCT MEMBERS:
  *  nSize        : Size of the structure in bytes       
- *	nVersion     : OMX specification version information
- *	nPortIndex   : Port that this structure applies to 
- * 	eImageFilter : Image filter type enumeration      
+ *  nVersion     : OMX specification version information
+ *  nPortIndex   : Port that this structure applies to 
+ *  eImageFilter : Image filter type enumeration      
  */
 typedef struct OMX_CONFIG_IMAGEFILTERTYPE {
     OMX_U32 nSize;
@@ -251,6 +265,8 @@ typedef enum OMX_COLORBLENDTYPE {
     OMX_ColorBlendAnd,
     OMX_ColorBlendOr,
     OMX_ColorBlendInvert,
+    OMX_ColorBlendKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_ColorBlendVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_ColorBlendMax = 0x7FFFFFFF
 } OMX_COLORBLENDTYPE;
 
@@ -260,10 +276,10 @@ typedef enum OMX_COLORBLENDTYPE {
  *
  * STRUCT MEMBERS:
  *  nSize             : Size of the structure in bytes                        
- *	nVersion          : OMX specification version information                
- *	nPortIndex        : Port that this structure applies to                   
- *	nRGBAlphaConstant : Constant global alpha values when global alpha is used
- *	eColorBlend       : Color blend type enumeration                         
+ *  nVersion          : OMX specification version information                
+ *  nPortIndex        : Port that this structure applies to                   
+ *  nRGBAlphaConstant : Constant global alpha values when global alpha is used
+ *  eColorBlend       : Color blend type enumeration                         
  */
 typedef struct OMX_CONFIG_COLORBLENDTYPE {
     OMX_U32 nSize;
@@ -279,10 +295,10 @@ typedef struct OMX_CONFIG_COLORBLENDTYPE {
  *
  * STRUCT MEMBERS:
  *  nSize      : Size of the structure in bytes      
- *	nVersion   : OMX specification version information
- *	nPortIndex : Port that this structure applies to     
- *	nWidth     : Frame width in pixels                 
- * 	nHeight    : Frame height in pixels                
+ *  nVersion   : OMX specification version information
+ *  nPortIndex : Port that this structure applies to     
+ *  nWidth     : Frame width in pixels                 
+ *  nHeight    : Frame height in pixels                
  */
 typedef struct OMX_FRAMESIZETYPE {
     OMX_U32 nSize;
@@ -298,9 +314,9 @@ typedef struct OMX_FRAMESIZETYPE {
  *
  * STRUCT MEMBERS:
  *  nSize      : Size of the structure in bytes             
- *	nVersion   : OMX specification version information
- *	nPortIndex : Port that this structure applies to
- *	nRotation  : +/- integer rotation value               
+ *  nVersion   : OMX specification version information
+ *  nPortIndex : Port that this structure applies to
+ *  nRotation  : +/- integer rotation value               
  */
 typedef struct OMX_CONFIG_ROTATIONTYPE {
     OMX_U32 nSize;
@@ -324,6 +340,8 @@ typedef enum OMX_MIRRORTYPE {
     OMX_MirrorVertical,
     OMX_MirrorHorizontal,
     OMX_MirrorBoth, 
+    OMX_MirrorKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_MirrorVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_MirrorMax = 0x7FFFFFFF   
 } OMX_MIRRORTYPE;
 
@@ -333,9 +351,9 @@ typedef enum OMX_MIRRORTYPE {
  *
  * STRUCT MEMBERS:
  *  nSize      : Size of the structure in bytes      
- *	nVersion   : OMX specification version information
+ *  nVersion   : OMX specification version information
  *  nPortIndex : Port that this structure applies to  
- * 	eMirror    : Mirror type enumeration              
+ *  eMirror    : Mirror type enumeration              
  */
 typedef struct OMX_CONFIG_MIRRORTYPE {
     OMX_U32 nSize;
@@ -350,10 +368,10 @@ typedef struct OMX_CONFIG_MIRRORTYPE {
  *
  * STRUCT MEMBERS:
  *  nSize      : Size of the structure in bytes               
- *	nVersion   : OMX specification version information
- *	nPortIndex : Port that this structure applies to
- * 	nX         : X coordinate for the point                     
- *	nY         : Y coordinate for the point 
+ *  nVersion   : OMX specification version information
+ *  nPortIndex : Port that this structure applies to
+ *  nX         : X coordinate for the point                     
+ *  nY         : Y coordinate for the point 
  */                      
 typedef struct OMX_CONFIG_POINTTYPE {
     OMX_U32 nSize;
@@ -369,12 +387,12 @@ typedef struct OMX_CONFIG_POINTTYPE {
  *
  * STRUCT MEMBERS:
  *  nSize      : Size of the structure in bytes                    
- *	nVersion   : OMX specification version information      
- *	nPortIndex : Port that this structure applies to    
- *	nLeft      : X Coordinate of the top left corner of the rectangle
- *	nTop       : Y Coordinate of the top left corner of the rectangle
- *	nWidth     : Width of the rectangle                              
- *	nHeight    : Height of the rectangle                             
+ *  nVersion   : OMX specification version information      
+ *  nPortIndex : Port that this structure applies to    
+ *  nLeft      : X Coordinate of the top left corner of the rectangle
+ *  nTop       : Y Coordinate of the top left corner of the rectangle
+ *  nWidth     : Width of the rectangle                              
+ *  nHeight    : Height of the rectangle                             
  */
 typedef struct OMX_CONFIG_RECTTYPE {
     OMX_U32 nSize;
@@ -439,6 +457,8 @@ typedef enum OMX_WHITEBALCONTROLTYPE {
     OMX_WhiteBalControlIncandescent,
     OMX_WhiteBalControlFlash,
     OMX_WhiteBalControlHorizon,
+    OMX_WhiteBalControlKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_WhiteBalControlVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_WhiteBalControlMax = 0x7FFFFFFF
 } OMX_WHITEBALCONTROLTYPE;
 
@@ -474,6 +494,8 @@ typedef enum OMX_EXPOSURECONTROLTYPE {
     OMX_ExposureControlBeach,
     OMX_ExposureControlLargeAperture,
     OMX_ExposureControlSmallApperture,
+    OMX_ExposureControlKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_ExposureControlVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_ExposureControlMax = 0x7FFFFFFF
 } OMX_EXPOSURECONTROLTYPE;
 
@@ -483,9 +505,9 @@ typedef enum OMX_EXPOSURECONTROLTYPE {
  *
  * STRUCT MEMBERS:
  *  nSize            : Size of the structure in bytes      
- *	nVersion         : OMX specification version information
- *	nPortIndex       : Port that this structure applies to                
- * 	eExposureControl : Exposure control enumeration         
+ *  nVersion         : OMX specification version information
+ *  nPortIndex       : Port that this structure applies to                
+ *  eExposureControl : Exposure control enumeration         
  */
 typedef struct OMX_CONFIG_EXPOSURECONTROLTYPE {
     OMX_U32 nSize;
@@ -602,7 +624,7 @@ typedef struct OMX_CONFIG_SATURATIONTYPE {
     OMX_VERSIONTYPE nVersion;
     OMX_U32 nPortIndex;
     OMX_S32 nSaturation;
-} OMX_CONFIG_SATURATIONTTYPE;
+} OMX_CONFIG_SATURATIONTYPE;
 
 
 /** 
@@ -664,7 +686,7 @@ typedef struct OMX_PARAM_INTERLEAVETYPE {
     OMX_U32 nPortIndex;
     OMX_BOOL bEnable;
     OMX_U32 nInterleavePortIndex;
-} OMX_CONFIG_INTERLEAVETYPE;
+} OMX_PARAM_INTERLEAVETYPE;
 
 
 /** 
@@ -678,6 +700,8 @@ typedef enum OMX_TRANSITIONEFFECTTYPE {
     OMX_EffectDissolve,
     OMX_EffectWipe,
     OMX_EffectUnspecifiedMixOfTwoScenes,
+    OMX_EffectKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_EffectVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_EffectMax = 0x7FFFFFFF
 } OMX_TRANSITIONEFFECTTYPE;
 
@@ -709,6 +733,8 @@ typedef enum OMX_DATAUNITTYPE {
     OMX_DataUnitVideoSegment,
     OMX_DataUnitSeveralSegments,
     OMX_DataUnitArbitraryStreamSection,
+    OMX_DataUnitKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_DataUnitVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_DataUnitMax = 0x7FFFFFFF
 } OMX_DATAUNITTYPE;
 
@@ -722,6 +748,8 @@ typedef enum OMX_DATAUNITENCAPSULATIONTYPE {
     OMX_DataEncapsulationElementaryStream,
     OMX_DataEncapsulationGenericPayload,
     OMX_DataEncapsulationRtpPayload,
+    OMX_DataEncapsulationKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_DataEncapsulationVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_DataEncapsulationMax = 0x7FFFFFFF
 } OMX_DATAUNITENCAPSULATIONTYPE;
 
@@ -746,6 +774,8 @@ typedef enum OMX_DITHERTYPE {
     OMX_DitherOrdered,
     OMX_DitherErrorDiffusion,
     OMX_DitherOther,
+    OMX_DitherKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_DitherVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_DitherMax = 0x7FFFFFFF
 } OMX_DITHERTYPE;
 
@@ -760,6 +790,127 @@ typedef struct OMX_CONFIG_DITHERTYPE {
     OMX_DITHERTYPE eDither;   /**< Type of dithering to use */
 } OMX_CONFIG_DITHERTYPE;
 
+typedef struct OMX_CONFIG_CAPTUREMODETYPE {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;     /**< Port that this structure applies to */
+    OMX_BOOL bContinuous;   /**< If true then ignore frame rate and emit capture 
+                             *   data as fast as possible (otherwise obey port's frame rate). */
+    OMX_BOOL bFrameLimited; /**< If true then terminate capture after the port emits the 
+                             *   specified number of frames (otherwise the port does not 
+                             *   terminate the capture until instructed to do so by the client). 
+                             *   Even if set, the client may manually terminate the capture prior 
+                             *   to reaching the limit. */
+    OMX_U32 nFrameLimit;      /**< Limit on number of frames emitted during a capture (only
+                               *   valid if bFrameLimited is set). */
+} OMX_CONFIG_CAPTUREMODETYPE;
+
+typedef enum OMX_METERINGTYPE {
+ 
+    OMX_MeteringModeAverage,     /**< Center-weighted average metering. */
+    OMX_MeteringModeSpot,  	      /**< Spot (partial) metering. */
+    OMX_MeteringModeMatrix,      /**< Matrix or evaluative metering. */
+ 
+    OMX_MeteringKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_MeteringVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+    OMX_EVModeMax = 0x7fffffff
+} OMX_METERINGTYPE;
+ 
+typedef struct OMX_CONFIG_EXPOSUREVALUETYPE {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_METERINGTYPE eMetering;
+    OMX_S32 xEVCompensation;      /**< Fixed point value stored as Q16 */
+    OMX_U32 nApertureFNumber;     /**< e.g. nApertureFNumber = 2 implies "f/2" - Q16 format */
+    OMX_BOOL bAutoAperture;		/**< Whether aperture number is defined automatically */
+    OMX_U32 nShutterSpeedMsec;    /**< Shutterspeed in milliseconds */ 
+    OMX_BOOL bAutoShutterSpeed;	/**< Whether shutter speed is defined automatically */ 
+    OMX_U32 nSensitivity;         /**< e.g. nSensitivity = 100 implies "ISO 100" */
+    OMX_BOOL bAutoSensitivity;	/**< Whether sensitivity is defined automatically */
+} OMX_CONFIG_EXPOSUREVALUETYPE;
+
+/** 
+ * Focus region configuration 
+ *
+ * STRUCT MEMBERS:
+ *  nSize           : Size of the structure in bytes
+ *  nVersion        : OMX specification version information
+ *  nPortIndex      : Port that this structure applies to
+ *  bCenter         : Use center region as focus region of interest
+ *  bLeft           : Use left region as focus region of interest
+ *  bRight          : Use right region as focus region of interest
+ *  bTop            : Use top region as focus region of interest
+ *  bBottom         : Use bottom region as focus region of interest
+ *  bTopLeft        : Use top left region as focus region of interest
+ *  bTopRight       : Use top right region as focus region of interest
+ *  bBottomLeft     : Use bottom left region as focus region of interest
+ *  bBottomRight    : Use bottom right region as focus region of interest
+ */
+typedef struct OMX_CONFIG_FOCUSREGIONTYPE {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_BOOL bCenter;
+    OMX_BOOL bLeft;
+    OMX_BOOL bRight;
+    OMX_BOOL bTop;
+    OMX_BOOL bBottom;
+    OMX_BOOL bTopLeft;
+    OMX_BOOL bTopRight;
+    OMX_BOOL bBottomLeft;
+    OMX_BOOL bBottomRight;
+} OMX_CONFIG_FOCUSREGIONTYPE;
+
+/** 
+ * Focus Status type 
+ */
+typedef enum OMX_FOCUSSTATUSTYPE {
+    OMX_FocusStatusOff = 0,
+    OMX_FocusStatusRequest,
+    OMX_FocusStatusReached,
+    OMX_FocusStatusUnableToReach,
+    OMX_FocusStatusLost,
+    OMX_FocusStatusKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+    OMX_FocusStatusVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+    OMX_FocusStatusMax = 0x7FFFFFFF
+} OMX_FOCUSSTATUSTYPE;
+
+/** 
+ * Focus status configuration 
+ *
+ * STRUCT MEMBERS:
+ *  nSize               : Size of the structure in bytes
+ *  nVersion            : OMX specification version information
+ *  nPortIndex          : Port that this structure applies to
+ *  eFocusStatus        : Specifies the focus status
+ *  bCenterStatus       : Use center region as focus region of interest
+ *  bLeftStatus         : Use left region as focus region of interest
+ *  bRightStatus        : Use right region as focus region of interest
+ *  bTopStatus          : Use top region as focus region of interest
+ *  bBottomStatus       : Use bottom region as focus region of interest
+ *  bTopLeftStatus      : Use top left region as focus region of interest
+ *  bTopRightStatus     : Use top right region as focus region of interest
+ *  bBottomLeftStatus   : Use bottom left region as focus region of interest
+ *  bBottomRightStatus  : Use bottom right region as focus region of interest
+ */
+typedef struct OMX_PARAM_FOCUSSTATUSTYPE {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_FOCUSSTATUSTYPE eFocusStatus;
+    OMX_BOOL bCenterStatus;
+    OMX_BOOL bLeftStatus;
+    OMX_BOOL bRightStatus;
+    OMX_BOOL bTopStatus;
+    OMX_BOOL bBottomStatus;
+    OMX_BOOL bTopLeftStatus;
+    OMX_BOOL bTopRightStatus;
+    OMX_BOOL bBottomLeftStatus;
+    OMX_BOOL bBottomRightStatus;
+} OMX_PARAM_FOCUSSTATUSTYPE;
+
+/** @} */
 
 #ifdef __cplusplus
 }

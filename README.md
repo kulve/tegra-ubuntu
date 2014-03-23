@@ -132,8 +132,8 @@ Optionally create 512M swap file:
     adduser ouya plugdev
     adduser ouya sudo
 
-### Install Slim login manager, XFCE, and Totem: ###
-    apt-get install xfce4 xfce4-goodies totem midori slim gstreamer0.10-plugins-good gstreamer0.10-alsa
+### Install Slim login manager, XFCE: ###
+    apt-get install xfce4 xfce4-goodies midori slim gstreamer0.10-plugins-good gstreamer0.10-alsa gnome-icon-theme-full
 
 ### Install Tegra 3 proprietary binaries and Ouya config files: ###
     dpkg -i tegra30-r16_*_armhf.deb

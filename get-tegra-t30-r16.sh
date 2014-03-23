@@ -6,7 +6,7 @@ SHA1_T30_R16="44e7f84dd6e3b80d37ecddf9cc133031b2653004"
 DST="tegra30-r16/nvidia-rootfs"
 SRC="Linux_for_Tegra"
 TEGRA_LIBDIR="usr/lib/tegra30"
-DEBIAN_XORG_ABI="12"
+DEBIAN_XORG_ABI="13"
 
 if [ ! -f $FILE_T30_R16 ]
 then
@@ -39,6 +39,8 @@ rm $DST/usr/lib/xorg/modules/drivers/tegra_drv.abi*.so
 
 mkdir -p $DST/$TEGRA_LIBDIR
 mv $DST/usr/lib/lib*so* $DST/$TEGRA_LIBDIR
+# Remove libjpeg as that breaks XBMC builds
+rm $DST/$TEGRA_LIBDIR/libjpeg.so
 
 ln -s libEGL.so.1 $DST/$TEGRA_LIBDIR/libEGL.so
 ln -s libGLESv1_CM.so.1 $DST/$TEGRA_LIBDIR/libGLESv1_CM.so

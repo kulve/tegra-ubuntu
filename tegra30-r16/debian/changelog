@@ -1,3 +1,17 @@
+tegra30-r16 (4-1) unstable; urgency=low
+
+  * Upgrade to 16r4.
+  * Enable GLX.
+  * Move dev files to separate packages.
+
+ -- Tuomas Kulve <tuomas@kulve.fi>  Sun, 23 Mar 2014 14:24:16 +0200
+
+tegra30-r16 (3-4) unstable; urgency=low
+
+  * Include OMX headers and pkgconfig file.
+
+ -- Tuomas Kulve <tuomas@kulve.fi>  Sat, 08 Mar 2014 09:47:42 +0200
+
 tegra30-r16 (3-3.2) unstable; urgency=low
 
   * Added ALSA conf

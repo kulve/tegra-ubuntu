@@ -11,4 +11,18 @@ Depends: libasound2, libc6, libglib2.0-0, libgstreamer-plugins-base0.10-0, libgs
 Description: Tegra 3 EABI proprietary binaries
   Provides NVIDIA Tegra 3 proprietary binaries including firmware,
   OpenGL ES and GStreamer binaries.
- 
+
+Package: tegra30-r16-gles2-dev
+Architecture: armhf
+Depends: tegra30-r16
+Conflicts: libgles2-mesa-dev
+Description: Tegra 3 GLES2/EGL headers.
+  Provides GLES2/EGL headers and pkgconfig files.
+
+Package: tegra30-r16-omxil-dev
+Architecture: armhf
+Depends: tegra30-r16-gles2-dev
+Conflicts: libomxil-bellagio-dev
+Description: Tegra 3 OMXIL headers.
+  Provides OMX IL headers and pkgconfig file.
+

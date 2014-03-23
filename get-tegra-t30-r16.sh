@@ -1,8 +1,8 @@
 #!/bin/sh
 
 BASE_URL="http://developer.nvidia.com/sites/default/files/akamai/mobile/files/L4T"
-FILE_T30_R16="cardhu_Tegra-Linux-R16.3.0_armhf.tbz2"
-SHA1_T30_R16="3562703ca78e0fb7bdf877bb0d9353e4c82f6c97"
+FILE_T30_R16="cardhu_Tegra-Linux-R16.4.0_armhf.tbz2"
+SHA1_T30_R16="44e7f84dd6e3b80d37ecddf9cc133031b2653004"
 DST="tegra30-r16/nvidia-rootfs"
 SRC="Linux_for_Tegra"
 TEGRA_LIBDIR="usr/lib/tegra30"
@@ -15,7 +15,7 @@ else
   echo "$FILE_T30_R16 found, not downloading."
 fi
 
-echo "$SHA1_T30_R16  $FILE_T30_R16" > $FILE_T30_R16.sha1sum 
+echo "$SHA1_T30_R16  $FILE_T30_R16" > $FILE_T30_R16.sha1sum
 
 if ! sha1sum -c $FILE_T30_R16.sha1sum
 then

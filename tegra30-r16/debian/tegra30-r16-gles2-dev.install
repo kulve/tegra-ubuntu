@@ -1,0 +1,9 @@
+usr/include/VG
+usr/include/KD
+usr/include/EGL
+usr/include/GLES2
+usr/include/GLES
+usr/include/KHR
+usr/pkgconfig/glesv2.pc
+usr/pkgconfig/egl.ps
+usr/pkgconfig/glesv1_cm.pc

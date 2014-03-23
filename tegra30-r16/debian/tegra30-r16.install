@@ -1,3 +1,7 @@
 etc
-usr
+usr/bin
+usr/sbin
+usr/lib/gstreamer-0.10
+usr/lib/tegra30
+usr/lib/xorg
 lib

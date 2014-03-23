@@ -1,11 +1,15 @@
 INSTALLING UBUNTU RARING TO OUYA
 ================================
 
-This is tested on Debian Wheezy and mostly adapted from https://github.com/kulve/tegra-debian
+This is tested on Debian Wheezy and adapted from https://github.com/kulve/tegra-debian
+
+Note that these Ubuntu instructions use the *first* partition of the USB stick, unlike my Debian instructions.
 
 *OUYA IS EASILY BRICKABLE. READ NO FURTHER*
 
-That said, the goal is not to flash anything on Ouya. Kernel is booted from memory and Ubuntu from USB stick or SD card.
+That said, the goal is not to flash anything on Ouya. The kernel is booted from memory and Ubuntu from an USB stick or SD card.
+
+The binaries mentioned in this readme can be found from http://tuomas.kulve.fi/tmp/ouya-ubuntu/ .
 
 Distribution issues
 -------------------
@@ -23,7 +27,7 @@ Known issues
 * Low-power core doesn't work (kernel crash)
     * CPUfreq with ondemand governer works though.
 * Gstreamer usually assumes xvimagesink as the video sink, but nvxvimagesink must be used.
-    * Totem obeys gconf: gconftool-2  -s /system/gstreamer/0.10/default/videosink nvxvimagesink --type=string
+    * Totem has moved to GStreamer 1.0 so no Tegra support anymore.
 * Wifi firmware binaries not included, they need to be copied from the Android rootfs.
 
 Setting up the rootfs
@@ -110,7 +114,7 @@ Hack around failing DBUS invoke:
     /.swap      none            swap    sw                0       0
     END
 
-Optionally create 512M sawp file:
+Optionally create 512M swap file:
 
     dd if=/dev/zero of=/.swap bs=1M count=512
     mkswap /.swap
@@ -129,7 +133,7 @@ Optionally create 512M sawp file:
     adduser ouya sudo
 
 ### Install Slim login manager, XFCE, and Totem: ###
-    apt-get install xfce4 xfce4-goodies totem midori slim gstreamer0.10-plugins-good gstreamer0.10-alsa gstreamer0.10-plugins-good
+    apt-get install xfce4 xfce4-goodies totem midori slim gstreamer0.10-plugins-good gstreamer0.10-alsa
 
 ### Install Tegra 3 proprietary binaries and Ouya config files: ###
     dpkg -i tegra30-r16_*_armhf.deb

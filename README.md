@@ -148,6 +148,10 @@ Change the options to match the following:
     echo 0 >/sys/module/cpu_tegra3/parameters/auto_hotplug
     echo 0 >/sys/module/cpuidle/parameters/lp2_in_idle
 
+### Remove pulseaudio
+
+    apt-get purge gstreamer0.10-pulseaudio pulseaudio
+
 ### Finish up with the chroot: ###
 
 Log out from the chroot and extract kernel modules to the target:
